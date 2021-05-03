@@ -89,8 +89,8 @@ static int fifoEviction(){
       if(frame->loading){
         fprintf(logFile, "Daemon: Skipping loading frame %d\n", framei);
 
-      }else if(page->referenced){ //if page is valid, drop the bit
-        page->referenced = 0;
+      }else if(page->pReferenced){ //if page is valid, drop the bit
+        page->pReferenced = 0;
         fprintf(logFile, "Daemon: Invalidated P%d page %d\n", frame->useri, frame->pagei);
         n--;
       }else{

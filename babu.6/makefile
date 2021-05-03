@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -g -pedantic -Wextra -Wcpp -std=c99 -D_POSIX_SOURCE
+CFLAGS=-Wall -g -Wextra -std=c99 -D_POSIX_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
 
 all: master user fifo_daemon
 

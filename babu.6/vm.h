@@ -33,7 +33,7 @@ enum refRW	{
 
 struct page {
 	unsigned short framei;       //frame index
-	unsigned char referenced:1;  //page is referenced
+	unsigned char pReferenced:1;  //page is pReferenced
 };
 
 struct frame {

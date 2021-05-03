@@ -1,3 +1,5 @@
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,10 +7,8 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <errno.h>
-#include <sys/shm.h>
 #include <sys/msg.h>
 #include <sys/sem.h>
-#include <sys/ipc.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -215,7 +215,7 @@ static void printFrames(FILE * output){
     struct frame * frame = &oss->frames[i];
 
     const int ref_bit = (frame->pagei != pageCount)
-                      ? oss->procs[frame->useri].vm[frame->pagei].referenced
+                      ? oss->procs[frame->useri].vm[frame->pagei].pReferenced
                       : 0;
 
     fprintf(output, "Frame %3d\t%10s\t\t%7d\t%10d\n", i,
@@ -230,7 +230,7 @@ static void pageClear(struct page * p){
     frameClear(p->framei);
   }
   p->framei = frameCount;
-  p->referenced = 0;
+  p->pReferenced = 0;
 }
 
 //Clear the page table of a process
@@ -254,11 +254,11 @@ static int pageExclude(struct frame * frames){
 		if(frame->pagei != pageCount){
       struct page * page = &oss->procs[frame->useri].vm[frame->pagei];
       //if page is not on_reference
-      if(page->referenced == 0){
+      if(page->pReferenced == 0){
         break;  //we have found the page to exclude
   		}else{
         //give second change to page
-  			page->referenced = 0;
+  			page->pReferenced = 0;
       }
     }
     ++clock_hand;
@@ -375,7 +375,7 @@ static enum refState on_reference(const unsigned char useri){
 		if(page->framei == frameCount){
 			return refError;
 		}
-  	page->referenced = 1;  //after page is loaded into memory, raise the referenced bit
+  	page->pReferenced = 1;  //after page is loaded into memory, raise the pReferenced bit
 
 
     //load the frame
