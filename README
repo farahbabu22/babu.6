@@ -1,0 +1,94 @@
+# Assignment 6 - Memory management using virutal memory (paging) in operating system
+
+A memory management module is simulated for this program which implements virtual memory paging using a second chance FIFO page replacement algorithm. In case of a page fault it will be swapped. 
+
+
+### Assignment details
+* Author: Farah Babu
+* SSO ID: FBKZX
+* email id: fbkzx@umsystem.edu
+
+### Files delivered
+
+```
+babu.6
+├─ clock.h
+├─ fifo_daemon.c
+├─ makefile
+├─ master.c
+├─ oss.c
+├─ oss.h
+├─ process.h
+├─ user.c
+└─ vm.h
+
+```
+
+### Design of the assignment
+
+#### clock.h
+* To define the structure for clock with seconds and nano seconds used in logging and timekeeping
+
+#### vm.h
+* Defining the virutal memory related parameters
+- Access Time
+- Swap Time
+- Page Size
+- Page Count
+- Frame Count which is 256K
+- Structure of the Page
+- Structure of the frame
+
+#### process.h
+* process states
+- Ready
+- Swap
+- Terminated
+
+#### oss.h
+* oss structure definition for virutal memory management
+* oss function declarations
+
+#### master.c
+* Main program to control the execution takes in the no of process attributes
+* Implement the queue algorithm FIFO
+* FIFO push and pop algorithm behavior is defined in this program. 
+* bit set or bit map to handle the page thrashing / swapping is handled.
+* frame operation management is also handled in this program. 
+* System calls used
+- fork - to spawn a new thread
+- excel - run system command
+- shmget - to get shared memory
+- semget - to get semaphore for IPC
+- semctl - to change semaphore controls
+- shmctl - to change shared memory options
+- shmdt - to remove the shared memory
+- semop - to modify semaphore options
+
+#### user.c
+* To emulate the user process
+* The user process will seek for memory
+
+
+#### oss.c
+* IPC program for OSS simulation
+
+#### fifo_daemon.c
+* To handle the queuing logic
+
+### Execution
+Clean the entire project using the below command
+> make clean
+
+make the project
+> make
+
+run the project
+> ./master -p <number of processes>
+
+view the output
+> cat master.log | more
+
+#### Issues faced
+- sometimes if the process are around 17/18 the programs is unable to schedule properly and takes over 10 seconds to run. 
+- In such situations please run the program with options < 14
